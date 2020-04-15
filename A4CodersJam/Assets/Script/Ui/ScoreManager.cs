@@ -22,5 +22,6 @@ namespace CoderJam
             textLife.text = "Life :" + StaticVariable.Life;
             textDeath.text = "Death :" + StaticVariable.Death;
         }
+
     }
 }

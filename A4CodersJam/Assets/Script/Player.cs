@@ -16,11 +16,12 @@ namespace CoderJam
 
         private Rigidbody rb;
         private Vector3 movement;
+        private int lifemax;
 
         private void Awake()
         {
-
-            StaticVariable.Life = 3;
+            lifemax = 8;
+            StaticVariable.Life = lifemax;
             StaticVariable.Death = 0;
             StaticVariable.Win = 0;
             rb = this.GetComponent<Rigidbody>();
@@ -51,6 +52,8 @@ namespace CoderJam
 
         void explosion()
         {
+            //tache.GetComponent<SpriteRenderer>().sharedMaterial.color = Random.ColorHSV(0f,1f,0f,0f);
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Instantiate(tache, Haut.transform.position, Quaternion.identity);
@@ -68,7 +71,7 @@ namespace CoderJam
             {
                 this.transform.position = spawn.transform.position;
                 StaticVariable.Death++;
-                StaticVariable.Life = 3;
+                StaticVariable.Life = lifemax;
             }
         }
     
