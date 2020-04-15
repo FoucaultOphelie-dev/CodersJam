@@ -14,17 +14,15 @@ namespace CoderJam
         public GameObject Droite;
         public GameObject tache;
 
-        public static int life = 3;
-        public static int death = 0;
-
         private Rigidbody rb;
         private Vector3 movement;
 
         private void Awake()
         {
 
-            life = 3;
-            death = 0;
+            StaticVariable.Life = 3;
+            StaticVariable.Death = 0;
+            StaticVariable.Win = 0;
             rb = this.GetComponent<Rigidbody>();
 
         }
@@ -43,6 +41,7 @@ namespace CoderJam
             movement = new Vector3(hAxis, vAxis, 0) * moveSpeed * Time.deltaTime;
 
             explosion();
+
         }
 
         private void FixedUpdate()
@@ -58,19 +57,20 @@ namespace CoderJam
                 Instantiate(tache, Bas.transform.position, Quaternion.identity);
                 Instantiate(tache, Gauche.transform.position, Quaternion.identity);
                 Instantiate(tache, Droite.transform.position, Quaternion.identity);
-                life--;
+                StaticVariable.Life--;
                 lifeManager();
             }
         }
 
         void lifeManager()
         {
-            if (life <= 0)
+            if (StaticVariable.Life <= 0)
             {
                 this.transform.position = spawn.transform.position;
-                death++;
-                life = 3;
+                StaticVariable.Death++;
+                StaticVariable.Life = 3;
             }
         }
+    
     }
 }

@@ -19,8 +19,8 @@ namespace CoderJam
         // Update is called once per frame
         void Update()
         {
-            textLife.text = "Life :"+ Player.life;
-            textDeath.text = "Death :" + Player.death;
+            textLife.text = "Life :" + StaticVariable.Life;
+            textDeath.text = "Death :" + StaticVariable.Death;
         }
     }
 }
