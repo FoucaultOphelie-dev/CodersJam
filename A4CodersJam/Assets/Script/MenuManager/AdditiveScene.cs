@@ -21,23 +21,23 @@ namespace CoderJam
             win();
         }
 
-        public void loadLevel01()
+        public void loadLevel02()
         {
-            StartCoroutine(LoadAdditiveScene("Level01"));
+            StartCoroutine(LoadAdditiveScene("Level02"));
         }
 
-        public void quitButton()
+        public void Return()
         {
             StartCoroutine(LoadMenu("Menu"));
         }
-
-        void win()
+        public void quitButton()
         {
-            if (StaticVariable.Win == 1)
-            {
-                StartCoroutine(LoadAdditiveScene("Win"));
-                StaticVariable.Win = 0;
-            }
+            Application.Quit();
+        }
+
+        public void win()
+        {
+            StartCoroutine(LoadAdditiveScene("Win"));
         }
 
         IEnumerator LoadAdditiveScene(string scene)

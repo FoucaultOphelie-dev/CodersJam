@@ -9,7 +9,6 @@ namespace CoderJam
 
         private static int life;
         private static int death;
-        private static int win;
 
         public static int Life
         {
@@ -23,10 +22,5 @@ namespace CoderJam
             set => death = value;
         }
 
-        public static int Win
-        {
-            get => win;
-            set => win = value;
-        }
     }
 }

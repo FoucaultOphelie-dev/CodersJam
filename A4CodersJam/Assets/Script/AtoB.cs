@@ -22,6 +22,7 @@ public class AtoB : MonoBehaviour
 
     void Update()
     {
+
         if (Vector3.Distance(this.transform.position, pointA.transform.position) <= 0.001f)
         {
             State = GoingTo.B;
@@ -49,6 +50,8 @@ public class AtoB : MonoBehaviour
         }
     }
 }
+
+
 
 public enum GoingTo
 {
