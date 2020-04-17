@@ -34,18 +34,26 @@ public class CameraManager2D : MonoBehaviour
 
     private Camera _camera;
 
+    [Header("Camera Bounded")]
+    public float speedBound;
+    public float gapBound;
+
     [HideInInspector]
     public bool win;
+
+    private float size;
 
     private void Awake()
     {
         instance = this;
         _camera = GetComponentInChildren<Camera>();
+        size = _camera.orthographicSize;
     }
     private void LateUpdate()
     {
         if (!win)
         {
+            _camera.orthographicSize = Mathf.PingPong(Time.time*speedBound, gapBound)+size;
             Vector3 position = transform.position;
             Vector3 followPosition = followTarget.position;
             if (_isBoundsEnabled)

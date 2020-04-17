@@ -8,65 +8,91 @@ namespace CoderJam
     {
         public float moveSpeed = 5f;
         public GameObject spawn;
-        public GameObject Haut;
-        public GameObject Bas;
-        public GameObject Gauche;
-        public GameObject Droite;
         public GameObject tache;
+        public GameObject pupille1;
+        public GameObject pupille2;
+        public float lerpRatio;
+        private AudioSource hitSound;
 
-        //private Rigidbody rb;
+
         private Vector3 movement;
         private int lifemax;
         [HideInInspector]
         public bool stop;
+        [HideInInspector]
+        public Vector2 addVelocity;
 
         private Rigidbody2D _rb;
         private List<CameraAreaTrigger> _areasList = new List<CameraAreaTrigger>();
+        private bool isMove;
 
         private void Awake()
         {
             lifemax = 8;
             StaticVariable.Life = lifemax;
             StaticVariable.Death = 0;
-            //rb = this.GetComponent<Rigidbody>();
             _rb = this.GetComponent<Rigidbody2D>();
+            hitSound = GetComponent<AudioSource>();
+            Debug.Log(gameObject.transform.position);
 
         }
 
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
         void Update()
         {
             if (!stop)
             {
                 float hAxis = Input.GetAxis("Horizontal");
                 float vAxis = Input.GetAxis("Vertical");
-                movement = new Vector3(hAxis, vAxis, 0) * moveSpeed * Time.deltaTime;
+                movement = new Vector3(hAxis, vAxis, 0) * moveSpeed * Time.deltaTime + new Vector3(addVelocity.x,addVelocity.y,0)*Time.deltaTime;
+                if (Input.GetKey(KeyCode.UpArrow))
+                {
+                    pupille1.transform.position = Vector3.Lerp(pupille1.transform.position,pupille1.GetComponent<VariablesPupilles>().posUp.transform.position,lerpRatio);
+                    pupille2.transform.position = Vector3.Lerp(pupille2.transform.position, pupille2.GetComponent<VariablesPupilles>().posUp.transform.position, lerpRatio);
+                    gameObject.GetComponent<Animator>().SetBool("isMove", true);
+
+                }
+                if (Input.GetKey(KeyCode.DownArrow))
+                {
+                    pupille1.transform.position = Vector3.Lerp(pupille1.transform.position, pupille1.GetComponent<VariablesPupilles>().posDown.transform.position, lerpRatio);
+                    pupille2.transform.position = Vector3.Lerp(pupille2.transform.position, pupille2.GetComponent<VariablesPupilles>().posDown.transform.position, lerpRatio);
+                    gameObject.GetComponent<Animator>().SetBool("isMove", true);
+                }
+                if (Input.GetKey(KeyCode.RightArrow))
+                {
+                    pupille1.transform.position = Vector3.Lerp(pupille1.transform.position, pupille1.GetComponent<VariablesPupilles>().posRight.transform.position, lerpRatio);
+                    pupille2.transform.position = Vector3.Lerp(pupille2.transform.position, pupille2.GetComponent<VariablesPupilles>().posRight.transform.position, lerpRatio);
+                    gameObject.GetComponent<Animator>().SetBool("isMove", true);
+                }
+                if (Input.GetKey(KeyCode.LeftArrow))
+                {
+                    pupille1.transform.position = Vector3.Lerp(pupille1.transform.position, pupille1.GetComponent<VariablesPupilles>().posLeft.transform.position, lerpRatio);
+                    pupille2.transform.position = Vector3.Lerp(pupille2.transform.position, pupille2.GetComponent<VariablesPupilles>().posLeft.transform.position, lerpRatio);
+                    gameObject.GetComponent<Animator>().SetBool("isMove", true);
+                }
+                if(!Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow))
+                {
+                    pupille1.transform.position = Vector3.Lerp(pupille1.transform.position, pupille1.GetComponent<VariablesPupilles>().posInit.transform.position, lerpRatio);
+                    pupille2.transform.position = Vector3.Lerp(pupille2.transform.position, pupille2.GetComponent<VariablesPupilles>().posInit.transform.position, lerpRatio);
+                    gameObject.GetComponent<Animator>().SetBool("isMove", false);
+                }
+
             }
 
         }
 
         private void FixedUpdate()
         {
-            //rb.MovePosition(transform.position + movement);
             _rb.MovePosition(transform.position + movement);
         }
 
         void explosion()
         {
-            //tache.GetComponent<SpriteRenderer>().sharedMaterial.color = Random.ColorHSV(0f,1f,0f,0f);
 
             GameObject blood = Instantiate(tache, transform.position, Quaternion.identity);
             blood.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f),  Random.Range(0f, 1f));
             blood.transform.rotation = new Quaternion(0, 0, Random.Range(0f, 1f), Random.Range(0f, 1f));
-            //Instantiate(tache, Bas.transform.position, Quaternion.identity);
-            //Instantiate(tache, Gauche.transform.position, Quaternion.identity);
-            //Instantiate(tache, Droite.transform.position, Quaternion.identity);
+            hitSound.Play();
+            gameObject.GetComponent<Animator>().Play("touche", 0, 0);
             StaticVariable.Life--;
             lifeManager();
         }

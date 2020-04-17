@@ -19,7 +19,7 @@ namespace CoderJam
             {
                 collision.gameObject.GetComponent<CoderJam.Player>().stop = true;
                 _camera.win = true;
-                win.SetActive(true);
+                StartCoroutine("Wait");
             }
         }
 
@@ -33,6 +33,13 @@ namespace CoderJam
         {
             win.SetActive(true);
             show.SetActive(false);
+        }
+
+        private IEnumerator Wait()
+        {
+            yield return new WaitForSeconds(5f);
+            win.SetActive(true);
+            isDone = true;
         }
     }
 }
